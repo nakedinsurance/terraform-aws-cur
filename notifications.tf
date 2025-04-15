@@ -24,7 +24,7 @@ resource "aws_lambda_function" "run_crawler" {
 
   role = aws_iam_role.lambda.arn
 
-  runtime          = "nodejs12.x"
+  runtime          = "nodejs20.x"
   handler          = "index.handler"
   filename         = data.archive_file.lambda.output_path
   source_code_hash = data.archive_file.lambda.output_base64sha256
@@ -40,6 +40,7 @@ resource "aws_lambda_function" "run_crawler" {
     aws_iam_role_policy.lambda,
     aws_cloudwatch_log_group.lambda,
   ]
+  tags = var.tags
 }
 
 data "archive_file" "lambda" {
@@ -58,8 +59,9 @@ resource "aws_lambda_permission" "allow_bucket" {
 }
 
 resource "aws_iam_role" "lambda" {
-  name               = "${var.report_name}-crawler-trigger"
+  name               = var.lambda_role_name != null ? var.lambda_role_name : "${var.report_name}-crawler-trigger"
   assume_role_policy = data.aws_iam_policy_document.crawler_trigger_assume.json
+  tags               = var.tags
 }
 
 resource "aws_iam_role_policy" "lambda" {
@@ -115,4 +117,5 @@ data "aws_iam_policy_document" "crawler_trigger" {
 resource "aws_cloudwatch_log_group" "lambda" {
   name              = "/aws/lambda/${local.lambda_function_name}"
   retention_in_days = var.lambda_log_group_retention_days
+  tags              = var.tags
 }

@@ -73,6 +73,17 @@ variable "lambda_log_group_retention_days" {
   default     = 14
 }
 
+variable "crawler_role_name" {
+  description = "Name of the IAM role for the Glue Crawler."
+  type        = string
+  default     = null
+}
+variable "lambda_role_name" {
+  description = "Name of the IAM role for the Lambda function."
+  type        = string
+  default     = null
+}
+
 variable "glue_crawler_create_log_group" {
   description = "Whether to create a CloudWatch Log Group for the Glue Crawler. Crawlers share Log Group, and this gives the option of managing the Log Group with retention through this module."
   type        = bool
