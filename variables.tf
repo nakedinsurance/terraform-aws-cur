@@ -76,7 +76,7 @@ variable "lambda_log_group_retention_days" {
 variable "crawler_role_name" {
   description = "Name of the IAM role for the Glue Crawler."
   type        = string
-  default     = "cur-crawler"
+  default     = null
 }
 variable "lambda_role_name" {
   description = "Name of the IAM role for the Lambda function."

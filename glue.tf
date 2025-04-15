@@ -27,7 +27,8 @@ resource "aws_glue_catalog_database" "cur" {
 
 # Crawler role
 resource "aws_iam_role" "crawler" {
-  name_prefix        = var.crawler_role_name
+  name               = var.crawler_role_name != null ? var.crawler_role_name: null
+  name_prefix        = var.crawler_role_name == null ? "cur-crawler-" : null
   assume_role_policy = data.aws_iam_policy_document.crawler_assume.json
 
   tags = var.tags
